@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Thy Pallor</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('background.png');
+      background-size: cover;
+      background-repeat: repeat-y;
+      background-position: top center;
+      font-family: 'Arial', sans-serif;
+      color: white;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .top-logo {
+      width: 120px;
+      height: auto;
+    }
+
+    .menu-center {
+      display: flex;
+      gap: 25px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .menu-center a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: background 0.3s, color 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .menu-center a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #ff4d4d;
+    }
+
+    .menu-center a .moon-effect {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) rotate(0deg);
+      width: 72px;
+      height: auto;
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .menu-center a:hover .moon-effect {
+      animation: moonSpinDrop 1.4s ease-out forwards;
+    }
+
+    .logo-kan-wrapper {
+      position: relative;
+      display: inline-block;
+      transition: transform 0.3s ease;
+      z-index: 2;
+    }
+
+    .logo-kan-wrapper:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 10px #ff4d4d);
+    }
+
+    .logo-kan-wrapper .moon-effect {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) rotate(0deg);
+      width: 72px;
+      height: auto;
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .logo-kan-wrapper:hover .moon-effect {
+      animation: moonSpinDrop 1.4s ease-out forwards;
+    }
+
+    @keyframes moonSpinDrop {
+      0% {
+        top: 100%;
+        opacity: 0;
+        transform: translateX(-50%) rotate(0deg) scale(0.8);
+      }
+      50% {
+        top: 110%;
+        opacity: 0.7;
+        transform: translateX(-50%) rotate(180deg) scale(1.1);
+      }
+      100% {
+        top: 120%;
+        opacity: 1;
+        transform: translateX(-50%) rotate(360deg) scale(1);
+      }
+    }
+    .page-section {
+      padding: 60px 40px;
+      text-align: center;
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    .bio-logo {
+      width: 100px;
+      margin: 10px 0;
+    }
+
+    .spotify-section {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 60px;
+      background-color: rgba(0, 0, 0, 0.6);
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .player-box {
+      width: 80%;
+      text-align: center;
+      position: relative;
+      overflow: visible;
+    }
+
+    #sosyal {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 60px 20px;
+      text-align: center;
+      min-height: 100vh;
+    }
+
+
+    #iletisim {
+      background-image: url('background.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      padding: 60px 20px;
+      color: #fff;
+      text-align: center;
+      min-height: 100vh;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 800px;
+      background-color: rgba(0,0,0,0.85);
+      padding: 50px;
+      border-radius: 16px;
+      color: white;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .form-container h2 {
+      margin-bottom: 40px;
+      font-size: 32px;
+    }
+
+    .form-container label {
+      font-size: 20px;
+      display: block;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+
+    .form-container select,
+    .form-container textarea,
+    .form-container input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      border: none;
+      font-size: 18px;
+      resize: vertical;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 16px;
+      background-color: #0f9d58;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .diskografi-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      padding: 40px 20px;
+    }
+
+    .album-card {
+      min-height: 500px;
+      width: 400px;
+      position: relative;
+      text-align: center;
+      color: white;
+    }
+
+    .album-cover {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      background-color: rgba(0,0,0,0.6);
+      transition: transform 0.3s ease;
+    }
+
+    .album-cover img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .album-info {
+      margin-top: 10px;
+    }
+
+    .tracklist {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0,0,0,0.85);
+      padding: 10px;
+      border-radius: 0 0 10px 10px;
+      font-size: 14px;
+      color: white;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .album-cover:hover .tracklist {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+   #bio,
+   #diskografi,
+   #sosyal medya {
+  min-height: 100vh;
+}
+
+}
+  </style>
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="logo-kan-wrapper">
+      <img src="Thy Pallor.png" alt="Sol Logo" class="top-logo">
+      <img src="moon.png" class="moon-effect">
+    </div>
+    <div class="menu-center">
+      <a onclick="showSection('home')">
+        Ana Sayfa
+        <img src="moon.png" class="moon-effect">
+      </a>
+      <a onclick="showSection('bio')">
+        Biyografi
+        <img src="moon.png" class="moon-effect">
+      </a>
+      <a onclick="showSection('diskografi')">
+        Diskografi
+        <img src="moon.png" class="moon-effect">
+      </a>
+      <a onclick="showSection('merch')">
+        Merch
+        <img src="moon.png" class="moon-effect">
+      </a>
+      <a onclick="showSection('sosyal')">
+        Sosyal Medya
+        <img src="moon.png" class="moon-effect">
+      </a>
+      <a onclick="showSection('iletisim')">
+        İletişim
+        <img src="moon.png" class="moon-effect">
+      </a>
+    </div>
+    <div class="logo-kan-wrapper">
+      <img src="Thy Pallor.png" alt="Sağ Logo" class="top-logo">
+      <img src="moon.png" class="moon-effect">
+    </div>
+  </div>
+  <!-- Ana Sayfa -->
+  <section id="home" class="page-section active">
+    <div class="spotify-section">
+      <div class="player-box">
+        <div class="logo-kan-wrapper" style="margin-bottom: 20px;">
+          <img src="Thy Pallor.png" alt="Thy Pallor Logo" style="width: 160px; height: auto;">
+          <img src="moon.png" class="moon-effect">
+        </div>
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/artist/6Cdt1QAOSg420geRuQpjzA?utm_source=generator" width="100%" height="700" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+ <!-- 📖 Biyografi -->
+  <section id="bio" class="page-section">
+    <div style="text-align: center; margin-bottom: 20px;" class="logo-kan-wrapper">
+      <h2>Biyografi</h2>
+      <img src="moon.png" class="moon-effect">
+    </div>
+    <div style="max-width: 800px; margin: 0 auto; font-size: 18px; line-height: 1.6; background-color: rgba(0,0,0,0.6); padding: 40px; border-radius: 12px;">
+      <p>
+       Thy Pallor Türkiye, Ankara kökenli bir Blackgaze/Post Black Metal grubudur.
+      </p>
+      <p>
+        Fikir, Unortheta ve M.IZ tarafından 2020'lerin sonlarına doğru bulundu.
+      </p>
+      <p>
+        Grup, M.IZ Türkiye'ye döndükten bir yıl sonraı 2021 yılında hayata geçirildi.
+      </p>
+      <p>
+        İlk teklimiz olan "The Day Everything Begins...i Ocak 2021'de yayınladık.
+       </p>
+       <p>
+        İki ay sonra, uzun ve zorlu bir çalışmanın ardından beş ay süren bir sürecin ardından ilk EP Cafunâ'yi yayınladık.
+       </p>
+        <p>
+         Bundan sonra, "Sournessll ve "Hiraethll adlı iki tekli yayınladık ve ilk uzun albümümüz üzerinde çalışmalarımızı sürdürürken sizleri bir tekliyle daha buluşturmak istedik.
+       </p>
+        <p>
+         Thy Pallor olarak bu tekliyle sizlere duygusal bir deneyim yaşatırken kalbinizi ısıtan bir etki bırakmayı hedef edindik.
+       </p>
+         <p>
+         Muhammed İzmirlioğlu - Vokal
+        </p>
+        <p>
+         Tolga Demirdelen - Gitar
+       </p>
+        <p>
+         Hasan Yüzücü - Vokal X Bas Gitar
+       </p>
+         <p>
+         Bedirhan Karamızrak - Davul
+         </p>
+    </div>
+  </section>
+<!-- Diskografi -->
+<section id="diskografi" class="page-section">
+  <!-- Başlık -->
+  <div style="text-align: center; margin-bottom: 40px;" class="logo-kan-wrapper">
+    <h2>Diskografi</h2>
+    <img src="moon.png" class="moon-effect">
+  </div>
+
+  <!-- Albüm Grid Yan Yana -->
+  <div class="diskografi-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
+ 
+ <!-- Where The Light Refuses To Bloom – Derleme Albüm (2025) -->
+    <div class="album-card">
+      <div class="album-cover">
+        <img src="https://i.scdn.co/image/ab67616d0000b273da12a3333ccc0a9eeee97757" alt="Various Artists – Derleme Albüm">
+        <div class="album-info">
+          <h3>Where The Light Refuses To Bloom – Derleme Albüm</h3>
+          <p>Çıkış Yılı: 2025</p>
+        </div>
+        <div class="tracklist">
+          <ul>
+            <li>Margen – AVANGART</li>
+            <li>Eos – Amimia</li>
+            <li>Ay, Düşmüş Bir Tanrının Gözüdür – AVANGART</li>
+            <li>Not Alone – Lovewillsaveus</li>
+            <li>Kupera – Thy Pallor</li>
+            <li>I'm Done Chasing Shadows – Traumat</li>
+            <li>Öfke Bürür, – When Night Leaves Again</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Promise (2024) -->
+    <div class="album-card">
+      <div class="album-cover">
+        <img src="https://i.scdn.co/image/ab67616d0000b273e78ad5d68485764abe19fa3d" alt="Promise">
+        <div class="album-info">
+          <h3>Promise</h3>
+          <p>Çıkış Yılı: 2024</p>
+        </div>
+        <div class="tracklist">
+          <ul>
+            <li>Promise</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hiraeth (2023) -->
+    <div class="album-card">
+      <div class="album-cover">
+        <img src="https://i.scdn.co/image/ab67616d0000b2739c415f569bbd0bcc66be35e1" alt="Hiraeth">
+        <div class="album-info">
+          <h3>Hiraeth</h3>
+          <p>Çıkış Yılı: 2023</p>
+        </div>
+        <div class="tracklist">
+          <ul>
+            <li>Hiraeth</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Day Everything Begins (2022) -->
+    <div class="album-card">
+      <div class="album-cover">
+        <img src="https://i.scdn.co/image/ab67616d0000b27369e8dcae6b13f536ac6feadc" alt="The Day Everything Begins">
+        <div class="album-info">
+          <h3>The Day Everything Begins</h3>
+          <p>Çıkış Yılı: 2022</p>
+        </div>
+        <div class="tracklist">
+          <ul>
+            <li>The Day Everything Begins</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cafuné (2022) -->
+    <div class="album-card">
+      <div class="album-cover">
+        <img src="https://i.scdn.co/image/ab67616d0000b2732a7826d5759d50f730fe7289" alt="Cafuné">
+        <div class="album-info">
+          <h3>Cafuné</h3>
+          <p>Çıkış Yılı: 2022</p>
+        </div>
+        <div class="tracklist">
+          <ul>
+            <li>Cafuné</li>
+            <li>Path Of Withness</li>
+            <li>Ruby Rush</li>
+            <li>Ashen</li>
+            <li>FAding Memories</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sourness (2022) -->
+    <div class="album-card">
+      <div class="album-cover">
+        <img src="https://i.scdn.co/image/ab67616d0000b273f1eaaee44e4cd78195115628" alt="Sourness">
+        <div class="album-info">
+          <h3>Sourness</h3>
+          <p>Çıkış Yılı: 2022</p>
+        </div>
+        <div class="tracklist">
+          <ul>
+            <li>Sourness</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Merch -->
+<section id="merch" class="page-section">
+  <div style="text-align: center; margin-bottom: 20px;" class="logo-kan-wrapper">
+    <h2>Merch</h2>
+    <img src="moon.png" class="moon-effect">
+  </div>
+
+  <!-- Tüm ürünleri kapsayan tek grid -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
+    <!-- Ürün kartları -->
+    <div style="text-align: center; width: 240px;">
+      <img src="https://cdn.shopier.app/pictures_large/dagonatelier_57c1add3163abf916f5a6bd586672819.png" alt="Thy Pallor Band Bez Çanta DAB-20" class="bio-hover" style="width: 100%; border-radius: 10px;">
+      <p><strong>Thy Pallor Band Bez Çanta DAB-20</strong></p>
+      <a href="https://www.shopier.com/35004998" target="_blank"><button>Satın Al</button></a>
+    </div>
+
+    <div style="text-align: center; width: 240px;">
+      <img src="https://cdn.shopier.app/pictures_large/DagonWearAnkara_3b2fa75ea0967efcd0a0c62435ce3b3b.jpeg" alt="Thy Pallor Solemn Silentness Angel Oversize Unisex Hoodie" class="bio-hover" style="width: 100%; border-radius: 10px;">
+      <p><strong>Solemn Silentness Angel Oversize Unisex Hoodie</strong></p>
+      <a href="https://www.shopier.com/32102175" target="_blank"><button>Satın Al</button></a>
+    </div>
+
+    <div style="text-align: center; width: 240px;">
+      <img src="https://cdn.shopier.app/pictures_large/DagonWearAnkara_5ce9431f5fefe49f19a7d5df0e98b6d0.jpg" alt="Thy Pallor Hiraeth Colour Oversize Unisex White T-Shirt" class="bio-hover" style="width: 100%; border-radius: 10px;">
+      <p><strong>Thy Pallor Hiraeth Colour Oversize Unisex White T-Shirt</strong></p>
+      <a href="https://www.shopier.com/32102154" target="_blank"><button>Satın Al</button></a>
+    </div>
+
+    <div style="text-align: center; width: 240px;">
+      <img src="https://cdn.shopier.app/pictures_large/DagonWearAnkara_e348a5bf1e3e8f2af438a856d363de4c.jpg" alt="Thy Pallor Wing Oversize Unisex T-Shirt" class="bio-hover" style="width: 100%; border-radius: 10px;">
+      <p><strong>Thy Pallor Wing Oversize Unisex T-Shirt</strong></p>
+      <a href="https://www.shopier.com/32102153" target="_blank"><button>Satın Al</button></a>
+    </div>
+
+    <div style="text-align: center; width: 240px;">
+      <img src="https://cdn.shopier.app/pictures_large/DagonWearAnkara_d492ec08d46f5681a4b9f5af62d6358d.jpg" alt="Thy Pallor Luna Oversize Unisex T-Shirt" class="bio-hover" style="width: 100%; border-radius: 10px;">
+      <p><strong>Thy Pallor Luna Oversize Unisex T-Shirt</strong></p>
+      <a href="https://www.shopier.com/32102152" target="_blank"><button>Satın Al</button></a>
+    </div>
+
+    <div style="text-align: center; width: 240px;">
+      <img src="https://cdn.shopier.app/pictures_large/DagonWearAnkara_0e3255220fcf1db927bba898f705df75.jpg" alt="Thy Pallor Solemn Silentness Yellow Oversize Unisex T-Shirt" class="bio-hover" style="width: 100%; border-radius: 10px;">
+      <p><strong>Thy Pallor Solemn Silentness Yellow Oversize Unisex T-Shirt</strong></p>
+      <a href="https://www.shopier.com/32102151" target="_blank"><button>Satın Al</button></a>
+    </div>
+
+    <div style="text-align: center; width: 240px;">
+      <img src="https://cdn.shopier.app/pictures_large/DagonWearAnkara_8c019729e7e9a84dfcd615f8e2fb9cbf.jpg" alt="Thy Pallor Solemn Silentness Red Oversize Unisex T-Shirt" class="bio-hover" style="width: 100%; border-radius: 10px;">
+      <p><strong>Thy Pallor Solemn Silentness Red Oversize Unisex T-Shirt</strong></p>
+      <a href="https://www.shopier.com/32102150" target="_blank"><button>Satın Al</button></a>
+    </div>
+
+    <div style="text-align: center; width: 240px;">
+      <img src="https://cdn.shopier.app/pictures_large/DagonWearAnkara_73d792f7dfc5e51ba7be73f47c55d587.jpg" alt="Thy Pallor Solemn Silentness Angel Oversize Unisex T-Shirt" class="bio-hover" style="width: 100%; border-radius: 10px;">
+      <p><strong>Thy Pallor Solemn Silentness Angel Oversize Unisex T-Shirt</strong></p>
+      <a href="https://www.shopier.com/32102149" target="_blank"><button>Satın Al</button></a>
+    </div>
+  </div>
+</section>
+
+<!-- Sosyal Medya -->
+<section id="sosyal" class="page-section">
+  <!-- Başlık -->
+  <div class="logo-kan-wrapper" style="text-align: center; margin-bottom: 20px;">
+    <h2>Sosyal Medya</h2>
+    <img src="moon.png" class="moon-effect">
+  </div>
+
+  <!-- Logolar: başlıktan daha aşağıda, ortalanmış ve yan yana -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 40px; margin-top: 100px;">
+    <a href="https://www.instagram.com/thypallor/" target="_blank">
+      <img src="instagram.png" style="width: 200px;">
+    </a>
+    <a href="https://thypallor.bandcamp.com/" target="_blank">
+      <img src="bandcamp.png" style="width: 200px;">
+    </a>
+    <a href="https://open.spotify.com/intl-tr/artist/6Cdt1QAOSg420geRuQpjzA" target="_blank">
+      <img src="spotify.png" style="width: 200px;">
+    </a>
+    <a href="https://music.apple.com/fr/artist/thy-pallor/1605653782" target="_blank">
+      <img src="applemusic.png" style="width: 200px;">
+    </a>
+    <a href="https://www.youtube.com/@ThyPallor" target="_blank">
+      <img src="youtube.png" style="width: 200px;">
+    </a>
+  </div>
+</section>
+
+
+<!-- İletişim -->
+<section id="iletisim" class="page-section">
+  <div class="form-container">
+    <form id="contactForm" method="POST" action="https://formspree.io/f/mldplavr">
+      <h2>İletişim</h2>
+
+      <label for="email">📧 Email adresiniz:</label>
+      <input type="email" name="email" id="email" placeholder="ornek@eposta.com" required>
+
+      <label for="message">Mesajınız:</label>
+      <textarea name="message" rows="10" placeholder="Mesajınızı buraya yazın..." required></textarea>
+
+      <button type="submit">Gönder</button>
+
+      <div id="successMessage" style="display: none; color: #0f9d58; font-size: 20px; margin-top: 20px;">
+        ✅ Mesajınız başarıyla gönderildi!
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Sayfa Geçişleri ve Form Script -->
+<script>
+  function showSection(sectionId) {
+    const sections = document.querySelectorAll('.page-section');
+    sections.forEach(sec => sec.classList.remove('active'));
+
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({
+        top: target.offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  const form = document.getElementById("contactForm");
+  const successMessage = document.getElementById("successMessage");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: data,
+      headers: {
+        Accept: "application/json"
+      }
+    }).then(response => {
+      if (response.ok) {
+        successMessage.style.display = "block";
+        form.reset();
+      } else {
+        alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+      }
+    });
+  });
+
+  window.onload = function () {
+    showSection('home');
+  };
+</script>
+</body>
+</html>
